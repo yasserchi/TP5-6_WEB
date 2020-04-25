@@ -43,7 +43,7 @@ router.get('/:id', function (req, res, next) {
   }
 })
 
-/* Add a new user. */
+/* Add a new user. methode POST */
 router.post('/', function (req, res, next) {
   const newUser = req.body
 
@@ -67,7 +67,7 @@ router.post('/', function (req, res, next) {
   }
 })
 
-/* Update a specific user */
+/* Update a specific user methode PATCH*/
 router.patch('/:id', function (req, res, next) {
   const id = req.params.id
   const newUserProperties = req.body
