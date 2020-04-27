@@ -123,11 +123,6 @@ describe('Users tests', () => {
           .should
           .have
           .property('password')
-        res
-          .body
-          .password
-          .should
-          .equal('password_robert')
         done()
       })
   })
@@ -197,7 +192,11 @@ describe('Users tests', () => {
           .login
           .should
           .equal('pedro')
-        res.body.password.should.equal('password_robertinio')
+        res
+          .body
+          .should
+          .have
+          .property('password')
         done()
       })
   })
