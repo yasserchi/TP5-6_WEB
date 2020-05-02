@@ -86,7 +86,7 @@ describe('Tests d\'authenfication', () => {
         var token = 'mauvais_token';
         chai
           .request(app)
-          .get('/v1/auth/verifacces')
+          .get('/v1/auth/verifyaccess')
           .set('authorization', 'Bearer ' + 'mauvais_token')
           .end((err, res) => {
             res
@@ -97,6 +97,16 @@ describe('Tests d\'authenfication', () => {
               .should
               .be
               .json
+            res
+              .body
+              .should
+              .have
+              .property("message");
+            res
+              .body
+              .message
+              .should
+              .equal("Unauthorized");
         done()
           })
       })
@@ -110,8 +120,8 @@ describe('Tests d\'authenfication', () => {
       .end((err, res) => {
         chai
           .request(app)
-          .get('/v1/auth/verifacces')
-          .set('authorization', 'Bearer ' + res.body.token)
+          .get('/v1/auth/verifyaccess')
+          .set('authorization', 'Bearer ' + res.body.access_token)
           .end((err, res) => {
             res
               .should
@@ -121,6 +131,16 @@ describe('Tests d\'authenfication', () => {
               .should
               .be
               .json
+            res
+              .body
+              .should
+              .have
+              .property("message");
+            res
+              .body
+              .message
+              .should
+              .equal("Ok");
         done()
           })
       })

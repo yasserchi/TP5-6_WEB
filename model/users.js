@@ -122,6 +122,7 @@ function validateUser(user) {
     return result
 }
 
+exports.users = users
 exports.get = get
 exports.getAll = getAll
 exports.add = add
