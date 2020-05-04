@@ -16,44 +16,40 @@ router.use((req, res, next) => {
 })
 
 /* login */
-router.post('/login', function (req, res) {
+router.post('/login', async (req, res) => {
 
-  	login = req.body.login;
-  	password = req.body.password;
+	const login = req.body.login;
+    const password = req.body.password;
 
-  	idp.login(login, password)
-    	.then((result) => {
-      		res.json(result)
-    	})
-    	.catch((result) => {
-      		res.status(401).json(result)
-    	})
+	try
+	{
+		const token = await idp.login(login, password);
+        res.json(token)
+	}
+    catch(err)
+    {
+    	res.status(401).json(err.message)
+	}
 })
 
 /* verifyaccess*/
-router.get('/verifyaccess', function (req, res) {
+router.get('/verifyaccess', async (req, res) => {
 
-	if (!req.headers.authorization) {
-    	return res.status(401).send()
-  	}
-
-  	let token = req.headers.authorization.split(' ')[1]
-  	idp.verifyaccess(token)
-    	.then(() => {
-      		res.status(200).json({
+    let token = req.header('Authorization')
+  	
+  	try{
+  	const legit = await idp.verifyaccess(token);
+    	res.status(200).json({
         		message: "Ok"
-      		})
     	})
-    	.catch(() => {
-      		res.status(401).json({
-        		message: "Unauthorized",
-        		type: "Unauthorized",
-        		code: 0
-      		})
-   	 	})	
+	}
+    catch(err)
+   	{
+      	res.status(401).json({
+        	message: "Unauthorized"
+      	})
+	}
 })
-
-
 /** return a closure to initialize idp */
 module.exports = (model) => {
   idp = model

@@ -83,11 +83,11 @@ describe('Tests d\'authenfication', () => {
       .post('/v1/auth/login')
       .send({login: 'pedro', password: 'pedro_mdp'})
       .end((err, res) => {
-        var token = 'mauvais_token';
+        const token = 'mauvais_token';
         chai
           .request(app)
           .get('/v1/auth/verifyaccess')
-          .set('authorization', 'Bearer ' + 'mauvais_token')
+          .set('Authorization', 'bearer ' + 'mauvais_token')
           .end((err, res) => {
             res
               .should
@@ -121,7 +121,7 @@ describe('Tests d\'authenfication', () => {
         chai
           .request(app)
           .get('/v1/auth/verifyaccess')
-          .set('authorization', 'Bearer ' + res.body.access_token)
+          .set('Authorization', 'bearer ' + res.body.access_token)
           .end((err, res) => {
             res
               .should

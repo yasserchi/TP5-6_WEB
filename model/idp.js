@@ -5,60 +5,58 @@ const fs = require("fs")
 const privateKey = fs.readFileSync('private.key');
 
 
-const login = (login_in, password_in) => {
-	return new Promise(async (resolve, reject) => {
-	    let user_exist = false
+const login = async (login_in, password_in) => {
 
-	    for(user of users) {
-	    	let { login } = user;
-	    	//console.log("login_in = " + login_in)
-	      	//console.log("login =" + login)
-	      	if(login === login_in) {
-	        	user_exist = true
-	        	//console.log("password_in = " + password_in)
-	      		//console.log("login =" + login)
-	        	if(user.password === undefined) {
-	        		console.log("error1")
-	         		return reject(new Error('erreur car password undefined'))
-	        	}
-	        	let hashed_password = user.password
-	        	console.log(hashed_password)
-	        	console.log(password_in)
-	 			try{
-		        	let samePass = await bcrypt.compare(password_in, user.password)
-		        	if(!samePass) {
-		        		console.log("error2")
-		            	return reject(new Error('erreur car pas les memes mdp(mais ça n arrive jamais ici'))
-		        	}
-		        }
-		        catch(err){
-		        	console.log("error3")
-		        	return reject(new Error('erreur au catch'))
-		        }
-	    
-	      	}
-	    }
 
-	    if(!user_exist) {
-	    	console.log("error4")
-	      	return reject(new Error('user n existe pas'))
-	    }
-	    resolve
-		Promise.reject(new Error('si on arrive ici, ca marche, a completer'))
-	})
+	const user = users.filter(users => users.login===login_in)[2];
+
+	if(!user) throw new Error('user n existe pas');
+
+	if(!user.password) {
+		throw new Error('erreur car password undefined');
+	}
+
+	const match = await bcrypt.compare(password_in, user.password);
+	if(!match) throw new Error('erreur car pas les memes mdp');
+
+	const result = await new Promise((resolve, reject) => { 
+  		jwt.sign(login_in, privateKey, { algorithm: 'RS256'}, (err, token) =>{
+    		if(err) reject(err);
+     		else resolve(token);
+  		}); 
+	});
+
+	return result;
+
 }
+/*	jwt.sign(login_in, privateKey, function(err, token) {
+		if(err)
+		{
+			console.log(err)
+		}
+  		console.log(token);
+	});*/
+/*
+	try{
+	    var token = jwt.sign(login_in, privateKey, { algorithm: 'RS256'});
+	    return token;
+	}
+	catch (e) {
+	    throw Error("Error sign")
+	}
+}
+*/
 
+const verifyaccess = async (token) => {
 
-const verifyaccess = (token) => {
-	return new Promise((resolve, reject) => {
-		jwt.verify(token, privateKey, (err, decoded) => {
-      		if(err !== null) {
-        		reject()
-      		} else {
-        		resolve()
-      		}
-    	})
-  	})
+	try{
+		const legit = await jwt.verify(token, privateKey)
+		return legit;
+	}
+	catch(e)
+	{   
+	    throw Error("error verify")
+	}
 }
 
 
