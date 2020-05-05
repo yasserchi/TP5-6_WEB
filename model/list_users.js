@@ -7,7 +7,7 @@ exports.users   =
         id: '45745c60-7b1a-11e8-9c9c-2d42b21b1a3e',
         name: 'Pedro Ramirez',
         login: 'pedro',
-        password: bcrypt.hash('pedro_mdp', saltRounds),
+        password: '$2y$10$YdVeTTZadXbxW1U/UN2heuRY8IPDVUm1gm4u1PbMfraKjv4pJ/oGC',
         age: 44
     }, {
         id: '456897d-98a8-78d8-4565-2d42b21b1a3e',
