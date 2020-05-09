@@ -35,10 +35,14 @@ router.post('/login', async (req, res) => {
 /* verifyaccess*/
 router.get('/verifyaccess', async (req, res) => {
 
-    let token = req.header('Authorization')
-  	
-  	try{
-  	const legit = await idp.verifyaccess(token);
+	const token = req.cookies.token
+	
+	if (!token) {
+		return res.status(401).end()
+	}
+  	try
+  	{
+  		const legit = await idp.verifyaccess(token);
     	res.status(200).json({
         		message: "Ok"
     	})
@@ -50,6 +54,8 @@ router.get('/verifyaccess', async (req, res) => {
       	})
 	}
 })
+
+
 /** return a closure to initialize idp */
 module.exports = (model) => {
   idp = model
