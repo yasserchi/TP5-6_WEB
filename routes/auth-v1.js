@@ -35,11 +35,8 @@ router.post('/login', async (req, res) => {
 /* verifyaccess*/
 router.get('/verifyaccess', async (req, res) => {
 
-	const token = req.cookies.token
-	
-	if (!token) {
-		return res.status(401).end()
-	}
+	const token = req.headers.authorization.split('Bearer ')[1]
+
   	try
   	{
   		const legit = await idp.verifyaccess(token);

@@ -87,7 +87,7 @@ describe('Tests d\'authenfication', () => {
         chai
           .request(app)
           .get('/v1/auth/verifyaccess')
-          .set('Authorization', 'bearer ' + 'mauvais_token')
+          .set('Authorization', 'Bearer ' + 'mauvais_token')
           .end((err, res) => {
             res
               .should
@@ -121,7 +121,7 @@ describe('Tests d\'authenfication', () => {
         chai
           .request(app)
           .get('/v1/auth/verifyaccess')
-          .set('Authorization', 'bearer ' + res.body.access_token)
+          .set('Authorization', 'Bearer ' + res.body.access_token)
           .end((err, res) => {
             res
               .should

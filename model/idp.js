@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const { users } = require('./list_users')
 const fs = require("fs")
 const privateKey = fs.readFileSync('private.key');
+const publicKey = fs.readFileSync('public.key');
 
 
 const login = async (login_in, password_in) => {
@@ -44,22 +45,18 @@ const verifyaccess = async (token) => {
 
 	const legit = await new Promise((resolve, reject) => {
 
-		jwt.verify(token, privateKey, { algorithms: ['RS256'] }, (err, res) =>{
+		jwt.verify(token, publicKey, { algorithms: ['RS256'] }, (err, res) =>{
 			if(err)
 			{
-				console.log(err)
 		    	reject()
 		    }
 		    else
 		   	{
 		    	resolve()
 		    }
-
 		});
 	});
 }
-
-
 
 
 exports.login = login
