@@ -25,7 +25,6 @@ const getAll = () => {
     return users
 }
 
-//a modif avec le password
 const add = async (user) => {
     //on prend le mot de passe de la requete envoye en dur puis on la hash pour stocker dans la bdd
    const hash = await bcrypt.hash(user.password, saltRounds) 
@@ -42,7 +41,6 @@ const add = async (user) => {
     return newUser;
 }
 
-//a modif avec le password (pas du tout bon)
 const update = async (id, newUserProperties) => {
     const usersFound = users.filter((user) => user.id === id)
 
