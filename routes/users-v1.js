@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
+const idp = require('../model/idp')
 let usersModel = undefined
 
 /* Control usermodel initialisation */
@@ -11,7 +11,29 @@ router.use((req, res, next) => {
       .status(500)
       .json({message: 'model not initialised'})
   }
-  next()
+
+  //middleware pour vérifier le token
+  if(req.headers.authorization === undefined)
+  {
+    res
+      .status(401)
+      .json({message: "Unauthorized"})
+  }
+  else
+  {
+    const token = req.headers.authorization.split('Bearer ')[1]
+
+    idp.verifyaccess(token)
+        .then(() => {
+          next()
+        })
+        .catch(() => {
+          res.status(401).json({
+            message: "Unauthorized"
+          })
+        })
+  }
+
 })
 
 /* GET a specific user by id */

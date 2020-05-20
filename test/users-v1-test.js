@@ -6,10 +6,27 @@ chai.should()
 chai.use(chaiHttp)
 
 describe('Users tests', () => {
+
+  let token
+
+  before((done) => {
+    chai
+      .request(app)
+      .post('/v1/auth/login')
+      .send({login: 'pedro', password: 'pedro_mdp'})
+      .end((err, res) => {
+        token = res.body.access_token
+        done()
+    })
+  });
+
+
+
   it('should list ALL users on /v1/users GET', done => {
     chai
       .request(app)
       .get('/v1/users')
+      .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {
         res
           .should
@@ -28,6 +45,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .get('/v1/users/45745c60-7b1a-11e8-9c9c-2d42b21b1a3e')
+      .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {
         res
           .should
@@ -57,6 +75,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .get('/v1/users/45745c60-unknow-2d42b21b1a3e')
+      .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {
         res
           .should
@@ -71,6 +90,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .post('/v1/users')
+      .set('Authorization', `Bearer ${token}`)
       .send({name: 'Robert', login: 'roro', age: 23, password: 'password_robert'})
       .end((err, res) => {
         res
@@ -131,6 +151,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .post('/v1/users')
+      .set('Authorization', `Bearer ${token}`)
       .send({name: 'Robert', login: 'roro', age: 23, password: 'password_robert', wrongparam: 'value'})
       .end((err, res) => {
         res
@@ -146,6 +167,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .post('/v1/users')
+      .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {
         res
           .should
@@ -160,6 +182,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .patch('/v1/users/45745c60-7b1a-11e8-9c9c-2d42b21b1a3e')
+      .set('Authorization', `Bearer ${token}`)
       .send({name: 'Robertinio', password: 'password_robertinio'})
       .end((err, res) => {
         res
@@ -205,6 +228,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .patch('/v1/users/45745c60-7b1a-11e8-9c9c-2d42b21b1a3e')
+      .set('Authorization', `Bearer ${token}`)
       .send({wrongparam1: 'Robertinio'})
       .end((err, res) => {
         res
@@ -220,6 +244,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .patch('/v1/users/45745c60-unknow-2d42b21b1a3e')
+      .set('Authorization', `Bearer ${token}`)
       .send({name: 'Robertinio'})
       .end((err, res) => {
         res
@@ -235,6 +260,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .delete('/v1/users/45745c60-7b1a-11e8-9c9c-2d42b21b1a3e')
+      .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {
         res
           .should
@@ -248,6 +274,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .delete('/v1/users/45745c60-unknown-2d42b21b1a3e')
+      .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {
         res
           .should
@@ -261,6 +288,7 @@ describe('Users tests', () => {
     chai
       .request(app)
       .delete('/v1/users/')
+      .set('Authorization', `Bearer ${token}`)
       .end((err, res) => {
         res
           .should
