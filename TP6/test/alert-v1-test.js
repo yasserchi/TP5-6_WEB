@@ -140,13 +140,12 @@ describe('Alerts tests', () => {
       		.post("/v1/alerts")
       		.set('Authorization', 'Bearer ' + goodToken)
       		.send({ type: 'sea', label: 'test3', status: 'danger', from: '2020-05-21T15:18:18.490Z', to: '2020-05-21T15:18:18.490Z' })
-      		.end((err, resp) => {
-        		resp.should.have.status(200)
+      		.end((err, res) => {
 		        chai
 		          	.request(app)
 		          	.put('/v1/alerts/' + res.body.id)
 		          	.set('Authorization', 'Bearer ' + goodToken)
-					.send({ type: 'sea', label: 'test3_update', status: 'danger', from: '2020-05-21T15:18:18.490Z', to: '2020-05-21T15:18:18.490Z' })
+					.send({id: res.body.id, type: 'sea', label: 'test3_update', status: 'danger', from: '2020-05-21T15:18:18.490Z', to: '2020-05-21T15:18:18.490Z' })
 		          	.end((err, res) => {
 		                res.should.have.status(200)
 		                res.body.should.have.property("type")
