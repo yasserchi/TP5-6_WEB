@@ -32,6 +32,7 @@
     "fs": "0.0.1-security",
     "helmet": "^3.21.1",
     "jsonwebtoken": "^8.4.0",
+    "nodemon": "^2.0.4",
     "tcomb": "^3.2.29",
     "uuid": "^3.3.2"
   }

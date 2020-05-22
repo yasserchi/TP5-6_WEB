@@ -1,0 +1,28 @@
+{
+  "name": "tp6",
+  "version": "1.0.0",
+  "description": "Documentation de base pour le TP",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "mocha --timeout 10000 --exit",
+    "test-watch": "mocha --watch",
+    "test-coverage": "nyc --reporter=lcov  npm test",
+    "test-report": "npm run test-coverage && nyc report"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "config": "^3.3.1",
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "glob": "^7.1.6",
+    "helmet": "^3.22.0",
+    "mango": "0.0.4",
+    "mongoose": "^5.9.15",
+    "nyc": "^15.0.1"
+  }
+}
