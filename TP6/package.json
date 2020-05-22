@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "glob": "^7.1.6",
     "helmet": "^3.22.0",
+    "jsonwebtoken": "^8.5.1",
     "mango": "0.0.4",
     "mocha": "^7.1.2",
     "mongoose": "^5.9.15",

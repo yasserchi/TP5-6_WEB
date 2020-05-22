@@ -15,8 +15,9 @@ describe('Alerts tests', () => {
 	it('should not give access', done => {
     	chai
 	    	.request(app)
-	    	.get('/v1/alerts/search')
+	    	.post('/v1/alerts/')
 	    	.set('Authorization', 'Bearer ' + 'mauvais token')
+	    	.send({ type: 'sea', label: 'test2', status: 'danger', from: '2020-05-21T15:18:18.490Z', to: '2020-05-21T15:18:18.490Z' })
 	    	.end((err, res) => {
 	        	res
 		        	.should
@@ -88,32 +89,6 @@ describe('Alerts tests', () => {
 	      })
   	})
 
-	it('should list alerts with the status warning on /v1/alerts/search GET', done => {
-    	chai
-      		.request(app)
-      		.post('/v1/alerts')
-      		.set('Authorization', 'Bearer ' + goodToken)
-      		.send({ type: 'weather', label: 'test3', status: 'warning', from: '2020-05-21T15:18:18.490Z', to: '2020-05-21T15:18:18.490Z' })
-      		.end((err, res) => {
-        		chai
-          			.request(app)
-			        .get('/v1/alerts/search')
-			        .query({ status: ['warning'] })
-			        .set('Authorization', 'Bearer ' + goodToken)
-			        .end((err, res) => {
-			            res
-			              	.should
-			              	.have
-			              	.status(200)
-			            res
-			            	.body
-			            	.should
-			            	.be
-			            	.an('array')
-			            done()
-			        })
-      		})
-  	})
 
 	it('should not add an INVALID alert on /v1/alerts POST', done => {
     	chai
