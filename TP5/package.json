@@ -27,7 +27,7 @@
     "nyc": "^13.3.0"
   },
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
     "helmet": "^3.21.1",
